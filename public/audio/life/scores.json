@@ -1,0 +1,37 @@
+{
+  "pond": {
+    "seconds": 128,
+    "rms_db": -20.0,
+    "peak_db": -9.06,
+    "seam_step": 0.0,
+    "mood": "small, curious, gently plucked"
+  },
+  "ocean": {
+    "seconds": 128,
+    "rms_db": -20.0,
+    "peak_db": -9.52,
+    "seam_step": 0.0,
+    "mood": "wide, slow, floating"
+  },
+  "shore": {
+    "seconds": 128,
+    "rms_db": -20.0,
+    "peak_db": -9.7,
+    "seam_step": 0.0,
+    "mood": "tentative steps, warm flowing rhythm"
+  },
+  "land": {
+    "seconds": 128,
+    "rms_db": -20.0,
+    "peak_db": -8.63,
+    "seam_step": 0.0,
+    "mood": "woodland, soft strings and rounded plucks"
+  },
+  "colony": {
+    "seconds": 128,
+    "rms_db": -20.0,
+    "peak_db": -8.74,
+    "seam_step": 0.0,
+    "mood": "home, gentle communal resolution"
+  }
+}

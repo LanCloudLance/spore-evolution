@@ -1,0 +1,46 @@
+name: Verify game and Windows offline release
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published offline release tag
+        required: true
+        default: v0.1.0-offline
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test --test-concurrency=4 tests/*.test.ts
+      - run: npx tsc --noEmit
+      - run: npx oxlint app/game tests offline/*.tsx scripts/*.mjs
+      - run: npm run build
+
+  windows:
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - name: Run the published Windows launcher
+        env:
+          SPORE_RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag || 'v0.1.0-offline' }}
+        run: node scripts/verify-windows-release.mjs
